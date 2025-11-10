@@ -1,0 +1,935 @@
+# any-llm Documentation
+
+> Complete documentation for any-llm - A Python library providing a single interface to different llm providers.
+
+This file contains all documentation pages concatenated for easy consumption by AI systems.
+
+---
+
+## index.md
+
+<!-- Source: index.md -->
+
+<p align="center">
+  <picture>
+    <img src="./images/any-llm-logo.png" width="20%" alt="Project logo"/>
+  </picture>
+</p>
+
+`any-llm` is a Python library providing a single interface to different llm providers.
+
+### Demo
+
+Try `any-llm` in action with our interactive chat demo that showcases streaming completions and provider switching:
+
+**[📂 Run the Demo](https://github.com/mozilla-ai/any-llm/tree/main/demos/chat#readme)**
+
+The demo features real-time streaming responses, multiple provider support, and collapsible "thinking" content display.
+
+### Getting Started
+
+Refer to the [Quickstart](#./quickstart.md) for instructions on installation and usage.
+
+### API Documentation
+
+`any-llm` provides two main interfaces:
+
+**Direct API Functions** (recommended for simple use cases):
+- [completion](#./api/completion.md) - Chat completions with any provider
+- [embedding](#./api/embedding.md) - Text embeddings
+- [responses](#./api/responses.md) - OpenAI-style Responses API
+
+**AnyLLM Class** (recommended for advanced use cases):
+- [Provider API](#./api/any_llm.md) - Lower-level provider interface with metadata access and reusability
+
+### Error Handling
+
+`any-llm` provides custom exceptions to indicate common errors like missing API keys
+and parameters that are unsupported by a specific provider.
+
+For more details on exceptions, see the [exceptions API documentation](#./api/exceptions.md).
+
+## For AI Systems
+
+This documentation is available in two AI-friendly formats:
+
+- **[llms.txt](https://mozilla-ai.github.io/any-llm/llms.txt)** - A structured overview with curated links to key documentation sections
+- **[llms-full.txt](https://mozilla-ai.github.io/any-llm/llms-full.txt)** - Complete documentation content concatenated into a single file
+
+
+---
+
+## quickstart.md
+
+<!-- Source: quickstart.md -->
+
+## Quickstart
+
+### Requirements
+
+- Python 3.11 or newer
+- API_KEYS to access to whichever LLM you choose to use.
+
+### Installation
+
+#### Direct Usage
+
+In your pip install, include the [supported providers](#./providers.md) that you plan on using, or use the `all` option if you want to install support for all `any-llm` supported providers.
+
+```bash
+pip install any-llm-sdk[mistral]  # For Mistral provider
+pip install any-llm-sdk[ollama]   # For Ollama provider
+# install multiple providers
+pip install any-llm-sdk[mistral,ollama]
+# or install support for all providers
+pip install any-llm-sdk[all]
+```
+
+#### Library Integration
+
+If you're integrating `any-llm` into your own library that others will use, you only need to install the base package:
+
+```bash
+pip install any-llm-sdk
+```
+
+In this scenario, the end users of your library will be responsible for installing the appropriate provider dependencies when they want to use specific providers. `any-llm` is designed so that you'll only encounter exceptions at runtime if you try to use a provider without having the required dependencies installed.
+
+Those exceptions will clearly describe what needs to be installed to resolve the issue.
+
+Make sure you have the appropriate API key environment variable set for your provider. Alternatively,
+you could use the `api_key` parameter when making a completion call instead of setting an environment variable.
+
+```bash
+export MISTRAL_API_KEY="YOUR_KEY_HERE"  # or OPENAI_API_KEY, etc
+```
+
+### Basic Usage
+
+`any-llm` provides two main approaches for working with LLM providers, each optimized for different use cases:
+
+#### Option 1: Direct API Functions
+
+[`completion`][any_llm.completion] and [`acompletion`][any_llm.acompletion] provide a unified interface across all providers - perfect for simple use cases and quick prototyping.
+
+**Recommended approach:** Use separate `provider` and `model` parameters:
+
+```python
+import os
+
+from any_llm import completion
+
+# Make sure you have the appropriate environment variable set
+assert os.environ.get('MISTRAL_API_KEY')
+
+# Recommended: separate provider and model parameters
+response = completion(
+    model="mistral-small-latest",
+    provider="mistral",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+print(response.choices[0].message.content)
+```
+
+**Alternative syntax:** You can also use the combined `provider:model` format:
+
+```python
+response = completion(
+    model="mistral:mistral-small-latest",  # <provider_id>:<model_id>
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+```
+
+#### Option 2: AnyLLM Class
+
+For advanced use cases that require provider reuse, metadata access, or more control over configuration:
+
+```python
+import os
+
+from any_llm import AnyLLM
+
+# Make sure you have the appropriate environment variable set
+assert os.environ.get('MISTRAL_API_KEY')
+
+llm = AnyLLM.create("mistral")
+
+response = llm.completion(
+    model="mistral-small-latest",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+print(response.choices[0].message.content)
+
+metadata = llm.get_provider_metadata()
+print(f"Supports streaming: {metadata.streaming}")
+print(f"Supports tools: {metadata.completion}")
+```
+
+#### When to Choose Which Approach
+
+**Use Direct API Functions (`completion`, `acompletion`) when:**
+
+- Making simple, one-off requests
+- Prototyping or writing quick scripts
+- You want the simplest possible interface
+
+**Use Provider Class (`AnyLLM.create`) when:**
+
+- Building applications that make multiple requests with the same provider
+- You want to avoid repeated provider instantiation overhead
+
+The provider_id should be specified according to the [provider ids supported by any-llm](#./providers.md).
+The `model_id` portion is passed directly to the provider internals: to understand what model ids are available for a provider,
+you will need to refer to the provider documentation or use our [`list_models`](#./api/list_models.md)  API if the provider supports that API.
+
+### Streaming
+
+For the [providers that support streaming](#./providers.md), you can enable it by passing `stream=True`:
+
+```python
+output = ""
+for chunk in completion(
+    model="mistral-small-latest",
+    provider="mistral",
+    messages=[{"role": "user", "content": "Hello!"}],
+    stream=True
+):
+    chunk_content = chunk.choices[0].delta.content or ""
+    print(chunk_content)
+    output += chunk_content
+```
+
+### Embeddings
+
+[`embedding`][any_llm.embedding] and [`aembedding`][any_llm.aembedding] allow you to create vector embeddings from text using the same unified interface across providers.
+
+Not all providers support embeddings - check the [providers documentation](#./providers.md) to see which ones do.
+
+```python
+from any_llm import embedding
+
+result = embedding(
+    model="text-embedding-3-small",
+    provider="openai",
+    inputs="Hello, world!" # can be either string or list of strings
+)
+
+# Access the embedding vector
+embedding_vector = result.data[0].embedding
+print(f"Embedding vector length: {len(embedding_vector)}")
+print(f"Tokens used: {result.usage.total_tokens}")
+```
+
+### Tools
+
+`any-llm` supports tool calling for providers that support it. You can pass a list of tools where each tool is either:
+
+1. **Python callable** - Functions with proper docstrings and type annotations
+2. **OpenAI Format tool dict** - Already in OpenAI tool format
+
+```python
+from any_llm import completion
+
+def get_weather(location: str, unit: str = "F") -> str:
+    """Get weather information for a location.
+
+    Args:
+        location: The city or location to get weather for
+        unit: Temperature unit, either 'C' or 'F'
+    """
+    return f"Weather in {location} is sunny and 75{unit}!"
+
+response = completion(
+    model="mistral-small-latest",
+    provider="mistral",
+    messages=[{"role": "user", "content": "What's the weather in Pittsburgh PA?"}],
+    tools=[get_weather]
+)
+```
+
+any-llm automatically converts your Python functions to OpenAI tools format. Functions must have:
+- A docstring describing what the function does
+- Type annotations for all parameters
+- A return type annotation
+
+
+---
+
+## providers.md
+
+<!-- Source: providers.md -->
+
+# Supported Providers
+
+`any-llm` supports the below providers. In order to discover information about what models are supported by a provider
+as well as what features the provider supports for each model, refer to the provider documentation.
+
+Provider source code can be found in the [`src/any_llm/providers/`](https://github.com/mozilla-ai/any-llm/tree/main/src/any_llm/providers) directory of the repository.
+
+!!! note "Legend"
+
+    - **Reasoning (Completions)**: Provider can return reasoning traces alongside the assistant message via the completions and/or streaming endpoints. This does not indicate whether the provider offers separate "reasoning models".See [this](https://github.com/mozilla-ai/any-llm/issues/95)
+    - **Streaming (Completions)**: Provider can stream completion results back as an iterator.
+    discussion for more information.
+    - **Image (Completions)**: Provider supports passing an `image_data` parameter for vision capabilities, as defined by the OpenAI spec [here](https://platform.openai.com/docs/api-reference/chat/create#chat_create-messages).
+    - **Responses API**: Provider supports the Responses API variant for text generation.  See [this](https://github.com/mozilla-ai/any-llm/issues/26) to follow along with our implementation effort.
+    - **List Models API**: Provider supports listing available models programmatically via the `list_models()` function. This allows you to discover what models are available from the provider at runtime, which can be useful for dynamic model selection or validation.
+
+
+<!-- The below table is auto-generated by the mkdocs build hook. It will display in the generated site -->
+<!-- AUTO-GENERATED TABLE START -->
+<!-- AUTO-GENERATED TABLE END -->
+
+
+---
+
+## gateway/overview.md
+
+<!-- Source: gateway/overview.md -->
+
+# Gateway Overview
+
+## What is any-llm gateway?
+
+any-llm gateway is a FastAPI-based proxy server that adds production-grade budget enforcement, API key management, and usage analytics on top of any-llm's multi-provider foundation. It sits between your applications and LLM providers, giving you complete control over costs, access, and observability.
+
+## Why use the gateway?
+
+Managing LLM costs and access at scale is challenging. Give users unrestricted access and you risk runaway costs. Lock it down too much and you slow down innovation. any-llm gateway solves this by providing:
+
+- **Cost Control**: Set budgets that automatically enforce or track spending limits
+- **Access Management**: Issue, revoke, and monitor API keys generated for user access without exposing provider credentials
+- **Complete Visibility**: Track every request with full token counts, costs, and metadata
+- **Production-Ready**: Deploy with Docker and Postgres, Kubernetes-ready
+
+## How it works
+
+The gateway exposes an OpenAI-compatible Completions API that works with any supported provider. Your applications connect to the gateway instead of directly to LLM providers, and the gateway handles:
+
+- **Authentication**: Validates requests using master keys or virtual API keys
+- **Budget Enforcement**: Checks spending limits before forwarding requests
+- **Provider Routing**: Routes requests to the appropriate LLM provider using the `provider:model` format (e.g., `openai:gpt-4o-mini`, `anthropic:claude-3-5-sonnet-20241022`)
+- **Usage Tracking**: Logs all requests with token counts and costs
+- **Streaming Support**: Handles streaming responses with automatic token tracking
+
+## Key Features
+
+### Smart Budget Management
+
+Create shared budget tiers with automatic daily, weekly, or monthly resets. Budgets can be:
+
+- **Shared across multiple users** - Perfect for team or organization-wide limits
+- **Automatically enforced** - Requests are rejected when budgets are exceeded
+- **Tracking-only mode** - Monitor spending without blocking requests
+- **Auto-resetting** - No manual intervention required for recurring budgets
+
+[Set up your first budget →](#budget-management.md)
+
+### Flexible API Key System
+
+Choose between two authentication patterns:
+
+**Master Key Authentication**
+* Ideal for trusted services and internal tools
+* Full access to all gateway features
+
+**Virtual API Keys**
+* Create scoped keys with fine-grained control
+* Set expiration dates for time-limited access
+* Associate with users for spend tracking
+* Add custom metadata for tracking
+* Activate, deactivate, or revoke on demand
+
+[Learn more about authentication →](#authentication.md)
+
+### Complete Usage Analytics
+
+Every request is logged with comprehensive details:
+
+- Full token counts (prompt, completion, total)
+- Per-request costs based on admin-configured per-token pricing
+- Request metadata and timestamps
+- User and API key attribution
+
+Track spending per user, view detailed usage history, and get the observability you need for cost attribution and chargebacks.
+
+### Production-Ready Deployment
+
+- **Quick Start**: Deploy with Docker in minutes
+- **Flexible Configuration**: Configure via YAML or environment variables
+- **Database**: Designed for PostgreSQL
+- **Kubernetes Ready**: Built-in liveness and readiness probes
+
+### Performance Impact
+The gateway adds minimal latency (<50ms) to requests while providing complete observability.
+
+
+## Getting Started
+
+For comprehensive setup instructions, see the [Quick Start Guide](#quickstart.md).
+
+## Next Steps
+
+- **[Quick Start](#quickstart.md)** - Deploy and configure your first gateway
+- **[Authentication](#authentication.md)** - Set up master keys and virtual API keys
+- **[Budget Management](#budget-management.md)** - Configure spending limits and tracking
+- **[Configuration](#configuration.md)** - Learn about all configuration options
+- **[API Reference](#api-reference.md)** - Explore the complete API
+
+
+---
+
+## gateway/quickstart.md
+
+<!-- Source: gateway/quickstart.md -->
+
+# Quick Start
+
+## Run from Docker Image
+
+```bash
+docker run \
+-e GATEWAY_MASTER_KEY="your-secure-master-key" \
+-e OPENAI_API_KEY="your-api-key" \
+-p 8000:8000 \
+ghcr.io/mozilla-ai/any-llm/gateway:latest
+```
+
+## Local development
+
+### Option 1: Docker compose
+
+First, create a `config.yaml` file with your configuration, using config.example.yaml as a template.
+
+Then run the Docker containers:
+
+```bash
+docker-compose -f docker/docker-compose.yml up -d --build
+
+# Tail the logs
+docker-compose -f docker/docker-compose.yml logs -f
+```
+
+This will run any-llm-gateway using the credentials and configuration specified in `config.yaml`.
+
+### Option 2: CLI
+
+In order for this to work, you will need to have a Postgres DB running.
+```bash
+uv venv --python=3.13
+source .venv/bin/activate
+uv sync --all-extras -U
+```
+
+```bash
+export GATEWAY_MASTER_KEY="your-secure-master-key"
+export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/any_llm_gateway"
+export OPENAI_API_KEY="your-api-key" # Or GEMINI_API_KEY etc
+
+any-llm-gateway serve # Or, you can put the env vars in a config.yaml file and run serve with --config path/to/yaml
+```
+
+## Basic Usage
+
+The gateway supports two authentication patterns for making completion requests:
+
+### Option 1: Direct Master Key Authentication
+
+First, create a user.
+
+```bash
+curl -X POST http://localhost:8000/v1/users \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "user-123", "alias": "Alice"}'
+```
+
+Use the master key directly and specify which user is making the request.
+
+```bash
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai:gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Hello!"}],
+    "user": "user-123"
+  }'
+```
+
+### Option 2: Virtual API Keys
+
+Create a virtual API key (you can optionally pass in a user_id too if you want the key linked to a user)
+
+```bash
+curl -X POST http://localhost:8000/v1/keys \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{"key_name": "mobile-app"}'
+```
+
+Now you can use that new api key and don't need to pass in the user field.
+
+```bash
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "X-AnyLLM-Key: Bearer gw-..." \
+  -H "Content-Type: application/json" \
+  -d '{"model": "openai:gpt-5-mini", "messages": [{"role": "user", "content": "Hello!"}]}'
+```
+
+Usage is automatically tracked under the virtual user associated with the virtual key.
+
+
+---
+
+## gateway/authentication.md
+
+<!-- Source: gateway/authentication.md -->
+
+# Authentication
+
+The any-llm Gateway supports two main authentication patterns for making completion requests.
+
+## Direct Master Key Authentication
+
+Use the master key directly and specify which user is making the request.
+
+### Creating a User
+
+```bash
+curl -X POST http://localhost:8000/v1/users \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{"user_id": "user-123", "alias": "Alice"}'
+```
+
+### Making Requests with Master Key
+
+```bash
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "openai:gpt-4o-mini",
+    "messages": [{"role": "user", "content": "Hello!"}],
+    "user": "user-123"
+  }'
+```
+
+## Virtual API Keys
+
+Virtual API keys provide a more secure way to authenticate requests without exposing the master key.
+
+### Creating a Virtual API Key
+
+```bash
+curl -X POST http://localhost:8000/v1/keys \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{"key_name": "mobile-app"}'
+```
+
+Response:
+```json
+{
+  "id": "abc-123",
+  "key": "gw-...",
+  "key_name": "mobile-app",
+  "created_at": "2025-10-20T10:00:00",
+  "expires_at": null,
+  "is_active": true,
+  "metadata": {}
+}
+```
+
+### Using Virtual API Keys
+
+```bash
+curl -X POST http://localhost:8000/v1/chat/completions \
+  -H "X-AnyLLM-Key: Bearer gw-..." \
+  -H "Content-Type: application/json" \
+  -d '{"model": "openai:gpt-5-mini", "messages": [{"role": "user", "content": "Hello!"}]}'
+```
+
+Usage is automatically tracked under the virtual user associated with the virtual key.
+
+
+---
+
+## gateway/budget-management.md
+
+<!-- Source: gateway/budget-management.md -->
+
+# Budget Management
+
+Budgets provide shared spending limits that can be assigned to multiple users. This allows you to create budget tiers (like "Free", "Pro", "Enterprise") and enforce spending limits across groups of users.
+
+## Creating a Budget
+
+```bash
+# Create a budget with a $10.00 spending limit and monthly resets (30 days = 2592000 seconds)
+curl -X POST http://localhost:8000/v1/budgets \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "max_budget": 10.0,
+    "budget_duration_sec": 2592000
+  }'
+```
+
+Response:
+```json
+{
+  "budget_id": "abc-123",
+  "max_budget": 10.0,
+  "budget_duration_sec": 2592000,
+  "created_at": "2025-10-22T10:00:00Z",
+  "updated_at": "2025-10-22T10:00:00Z"
+}
+```
+
+## Assigning Budgets to Users
+
+When creating or updating a user, specify the `budget_id`:
+
+**Warning: If you don't create and set a budget, budget is unlimited**
+
+```bash
+# Create a user with a budget
+curl -X POST http://localhost:8000/v1/users \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "user_id": "user-456",
+    "alias": "Bob",
+    "budget_id": "abc-123"
+  }'
+
+# Update an existing user's budget
+curl -X PATCH http://localhost:8000/v1/users/user-123 \
+  -H "X-AnyLLM-Key: Bearer your-secure-master-key" \
+  -H "Content-Type: application/json" \
+  -d '{"budget_id": "abc-123"}'
+```
+
+## Per-User Budget Resets
+
+Budget resets are **per-user**, not global. Each user tracks their own budget period based on when they were assigned the budget.
+
+**Example:**
+1. Create a budget with `budget_duration_sec: 604800` (1 week)
+2. Assign User A to the budget on Monday
+3. Assign User B to the budget on Tuesday
+4. User A's budget resets every Monday
+5. User B's budget resets every Tuesday
+
+This allows you to create budget tiers (like "Free", "Pro", "Enterprise") without worrying about all users resetting at the same time.
+
+## Automatic Reset Behavior
+
+Budget resets happen automatically using a "lazy reset" approach:
+- When a user makes a request, the system checks if their `next_budget_reset_at` has passed
+- If yes, the user's `spend` is reset to $0.00 and a new reset date is calculated
+- A log entry is created in `budget_reset_logs` for audit purposes
+- The request then proceeds normally
+
+
+---
+
+## gateway/configuration.md
+
+<!-- Source: gateway/configuration.md -->
+
+# Configuration
+
+## Option 1: Config File
+
+Create a `config.yaml`:
+
+```yaml
+database_url: "postgresql://gateway:gateway@localhost:5432/gateway_db"
+master_key: "your-secure-master-key"
+
+providers:
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+  gemini:
+    api_key: "${GEMINI_API_KEY}"
+  vertexai:
+    credentials: "/path/to/service_account.json"
+    project: "your-gcp-project-id"
+    location: "us-central1"
+
+pricing:
+  openai:gpt-3.5-turbo:
+    input_price_per_million: 0.5
+    output_price_per_million: 1.5
+```
+
+Start with config file:
+```bash
+any-llm-gateway serve --config config.yaml
+```
+
+## Option 2: Environment Variables
+
+```bash
+export DATABASE_URL="postgresql://gateway:gateway@localhost:5432/gateway_db"
+export GATEWAY_MASTER_KEY="your-secure-master-key"
+export GATEWAY_HOST="0.0.0.0"
+export GATEWAY_PORT=8000
+
+any-llm-gateway serve
+```
+
+## Model Pricing Configuration
+
+Configure model pricing in your config file to automatically track costs. Pricing can be set via config file or dynamically via the API.
+
+### Config File Pricing
+
+Add pricing for models in your config file using the format `provider:model`:
+
+```yaml
+pricing:
+  openai:gpt-3.5-turbo:
+    input_price_per_million: 0.5
+    output_price_per_million: 1.5
+```
+
+**Important notes:**
+- Database pricing takes precedence - config only sets initial values
+- If pricing for the model already exists in the database, config values are ignored (with a warning logged)
+
+
+---
+
+## gateway/api-reference.md
+
+<!-- Source: gateway/api-reference.md -->
+
+# API Reference
+
+<swagger-ui src="openapi.json"/>
+
+
+---
+
+## gateway/troubleshooting.md
+
+<!-- Source: gateway/troubleshooting.md -->
+
+# Troubleshooting
+
+## Database connection errors
+
+Make sure the database URL is correct and the database is accessible:
+
+```bash
+python -c "from sqlalchemy import create_engine; engine = create_engine('postgresql://user:pass@host/db'); print('OK')"
+```
+
+## Common Issues
+
+### Authentication Errors
+
+- Ensure you're using the correct master key format: `Bearer your-secure-master-key`
+- Check that the `X-AnyLLM-Key` header is properly set
+- Verify that virtual API keys are active and not expired
+
+### Configuration Issues
+
+- Verify your `config.yaml` file is properly formatted
+- Check that environment variables are set correctly
+- Ensure provider API keys are valid and have proper permissions
+
+### Budget Enforcement
+
+- Check that budgets are properly assigned to users
+- Verify budget limits are set correctly
+- Monitor user spending to ensure limits are being enforced
+
+## Getting Help
+
+- Check the logs for detailed error messages
+- Verify your configuration matches the examples in the documentation
+- Ensure all required environment variables are set
+
+
+---
+
+## api/any_llm.md
+
+<!-- Source: api/any_llm.md -->
+
+## AnyLLM
+
+::: any_llm.AnyLLM
+
+
+---
+
+## api/responses.md
+
+<!-- Source: api/responses.md -->
+
+## Responses
+
+
+!!! warning
+
+    This API is experimental and subject to changes based upon our experience as we integrate additional providers.
+    Use with caution.
+
+::: any_llm.api.responses
+::: any_llm.api.aresponses
+
+
+---
+
+## api/completion.md
+
+<!-- Source: api/completion.md -->
+
+## Completion
+
+::: any_llm.api.completion
+::: any_llm.api.acompletion
+
+
+---
+
+## api/embedding.md
+
+<!-- Source: api/embedding.md -->
+
+## Embedding
+
+::: any_llm.api.embedding
+::: any_llm.api.aembedding
+
+
+---
+
+## api/exceptions.md
+
+<!-- Source: api/exceptions.md -->
+
+## Exceptions
+
+::: any_llm.exceptions
+
+
+---
+
+## api/list_models.md
+
+<!-- Source: api/list_models.md -->
+
+## Models
+
+::: any_llm.api.list_models
+::: any_llm.api.alist_models
+
+
+---
+
+## api/batch.md
+
+<!-- Source: api/batch.md -->
+
+# Batch
+
+!!! warning "Experimental API"
+    The Batch API is experimental and subject to breaking changes in future versions. Use with caution in production environments.
+
+The Batch API allows you to process multiple requests asynchronously at a lower cost.
+
+## File Path Interface
+
+The `any-llm` batch API requires you to pass a **path to a local JSONL file** containing your batch requests. The provider implementation automatically handles uploading and file management as needed.
+
+Different providers handle batch processing differently:
+
+- **OpenAI**: Requires uploading a file first, then creating a batch with the file ID
+- **Anthropic** (future): Expects file content passed directly in the request
+- **Other providers**: May have their own unique requirements
+
+By accepting a local file path, `any-llm` abstracts these provider differences and handles the implementation details automatically.
+
+::: any_llm.api.create_batch
+::: any_llm.api.acreate_batch
+::: any_llm.api.retrieve_batch
+::: any_llm.api.aretrieve_batch
+::: any_llm.api.cancel_batch
+::: any_llm.api.acancel_batch
+::: any_llm.api.list_batches
+::: any_llm.api.alist_batches
+
+
+---
+
+## api/types/completion.md
+
+<!-- Source: api/types/completion.md -->
+
+## Completion Types
+
+Data models and types for completion operations.
+
+::: any_llm.types.completion
+
+
+---
+
+## api/types/responses.md
+
+<!-- Source: api/types/responses.md -->
+
+## Response Types
+
+Data models and types for API responses.
+
+::: any_llm.types.responses
+
+
+---
+
+## api/types/model.md
+
+<!-- Source: api/types/model.md -->
+
+## Model Types
+
+Data models and types for model operations.
+
+::: any_llm.types.model
+
+
+---
+
+## api/types/provider.md
+
+<!-- Source: api/types/provider.md -->
+
+## Provider Types
+
+Data models and types for provider operations.
+
+::: any_llm.types.provider
+
+
+---
+
+## api/types/batch.md
+
+<!-- Source: api/types/batch.md -->
+
+## Batch Types
+
+Data models and types for batch operations.
+
+::: any_llm.types.batch
+
+
+---
