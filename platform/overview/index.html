@@ -9,10 +9,10 @@
       
       
       
-        <link rel="prev" href="../api-reference/">
+        <link rel="prev" href="../../api/types/batch/">
       
       
-        <link rel="next" href="../docker-deployment/">
+        <link rel="next" href="../../gateway/overview/">
       
       
         
@@ -23,7 +23,7 @@
     
     
       
-        <title>Troubleshooting - any-llm</title>
+        <title>Managed Platform - any-llm</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#troubleshooting" class="md-skip">
+        <a href="#managed-platform-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshooting
+              Managed Platform
             
           </span>
         </div>
@@ -789,10 +789,37 @@
       
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../platform/overview/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Managed Platform
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -808,6 +835,142 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-the-any-llm-managed-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is the any-llm Managed Platform?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-use-the-managed-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why use the Managed Platform?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#client-side-encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-Side Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#privacy-first-usage-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privacy-First Usage Tracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#project-organization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project Organization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#platform-vs-gateway" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Platform vs. Gateway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Started
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -816,20 +979,20 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
         
           
           <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
@@ -850,7 +1013,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             
@@ -868,7 +1031,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../overview/" class="md-nav__link">
+      <a href="../../gateway/overview/" class="md-nav__link">
         
   
   
@@ -896,7 +1059,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quickstart/" class="md-nav__link">
+      <a href="../../gateway/quickstart/" class="md-nav__link">
         
   
   
@@ -924,7 +1087,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../authentication/" class="md-nav__link">
+      <a href="../../gateway/authentication/" class="md-nav__link">
         
   
   
@@ -952,7 +1115,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../budget-management/" class="md-nav__link">
+      <a href="../../gateway/budget-management/" class="md-nav__link">
         
   
   
@@ -980,7 +1143,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../configuration/" class="md-nav__link">
+      <a href="../../gateway/configuration/" class="md-nav__link">
         
   
   
@@ -1008,7 +1171,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/" class="md-nav__link">
+      <a href="../../gateway/api-reference/" class="md-nav__link">
         
   
   
@@ -1033,37 +1196,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Troubleshooting
-  
-
-    
-  </span>
-  
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../gateway/troubleshooting/" class="md-nav__link">
         
   
   
@@ -1079,98 +1215,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#database-connection-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Database connection errors
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Issues
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Common Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#authentication-errors" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Authentication Errors
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#configuration-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Configuration Issues
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#budget-enforcement" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Budget Enforcement
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#getting-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Getting Help
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1183,7 +1227,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../docker-deployment/" class="md-nav__link">
+      <a href="../../gateway/docker-deployment/" class="md-nav__link">
         
   
   
@@ -1322,10 +1366,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#database-connection-errors" class="md-nav__link">
+  <a href="#what-is-the-any-llm-managed-platform" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Database connection errors
+        What is the any-llm Managed Platform?
       
     </span>
   </a>
@@ -1333,22 +1377,44 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
+  <a href="#why-use-the-managed-platform" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Common Issues
+        Why use the Managed Platform?
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Common Issues">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Features
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Features">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#authentication-errors" class="md-nav__link">
+  <a href="#client-side-encryption" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Authentication Errors
+        Client-Side Encryption
       
     </span>
   </a>
@@ -1356,10 +1422,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#configuration-issues" class="md-nav__link">
+  <a href="#privacy-first-usage-tracking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Configuration Issues
+        Privacy-First Usage Tracking
       
     </span>
   </a>
@@ -1367,10 +1433,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#budget-enforcement" class="md-nav__link">
+  <a href="#project-organization" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Budget Enforcement
+        Project Organization
       
     </span>
   </a>
@@ -1383,10 +1449,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#getting-help" class="md-nav__link">
+  <a href="#platform-vs-gateway" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Getting Help
+        Platform vs. Gateway
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#getting-started" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting Started
       
     </span>
   </a>
@@ -1410,7 +1498,7 @@
 
 
   
-    <a href="https://github.com/mozilla-ai/any-llm/edit/main/docs/gateway/troubleshooting.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/mozilla-ai/any-llm/edit/main/docs/platform/overview.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1418,36 +1506,153 @@
   
 
 
-<h1 id="troubleshooting">Troubleshooting</h1>
-<h2 id="database-connection-errors">Database connection errors</h2>
-<p>Make sure the database URL is correct and the database is accessible:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from sqlalchemy import create_engine; engine = create_engine(&#39;postgresql://user:pass@host/db&#39;); print(&#39;OK&#39;)&quot;</span>
+<h1 id="managed-platform-overview">Managed Platform Overview</h1>
+<h2 id="what-is-the-any-llm-managed-platform">What is the any-llm Managed Platform?</h2>
+<p>The any-llm managed platform is a cloud-hosted service that provides secure API key vaulting and usage tracking for all your LLM providers. Instead of managing multiple provider API keys across your codebase, you get a single virtual key that works with any supported provider while keeping your credentials encrypted and your usage tracked.</p>
+<p>The managed platform is available at <a href="https://any-llm.ai">any-llm.ai</a>.</p>
+<h2 id="why-use-the-managed-platform">Why use the Managed Platform?</h2>
+<p>Managing LLM API keys and tracking costs across multiple providers is challenging:</p>
+<ul>
+<li><strong>Security risks</strong>: API keys scattered across <code>.env</code> files, CI/CD pipelines, and developer machines</li>
+<li><strong>No visibility</strong>: Difficult to track spending across OpenAI, Anthropic, Google, and other providers</li>
+<li><strong>Key rotation pain</strong>: Updating keys means touching multiple systems and codebases</li>
+<li><strong>No performance insights</strong>: No easy way to measure latency, throughput, or reliability</li>
+</ul>
+<p>The managed platform solves these problems:</p>
+<ul>
+<li><strong>Secure Key Vault</strong>: Your provider API keys are encrypted client-side before storage—we never see your raw keys</li>
+<li><strong>Single Virtual Key</strong>: One <code>ANY_LLM_KEY</code> works across all providers</li>
+<li><strong>Usage Analytics</strong>: Track tokens, costs, and performance metrics without logging prompts or responses</li>
+<li><strong>Zero Infrastructure</strong>: No servers to deploy, no databases to manage</li>
+</ul>
+<h2 id="how-it-works">How it works</h2>
+<p>The managed platform acts as a secure credential manager and usage tracker. Here's the flow:</p>
+<ol>
+<li><strong>You add provider keys</strong> to the platform dashboard (keys are encrypted in your browser before upload)</li>
+<li><strong>You get a virtual key</strong> (<code>ANY_LLM_KEY</code>) that represents your project</li>
+<li><strong>Your application</strong> uses the <code>PlatformProvider</code> with your virtual key</li>
+<li><strong>The SDK</strong> authenticates with the platform, retrieves and decrypts your provider key client-side</li>
+<li><strong>Your request</strong> goes directly to the LLM provider (OpenAI, Anthropic, etc.)</li>
+<li><strong>Usage metadata</strong> (tokens, model, latency) is reported back—never your prompts or responses</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                          Your Application                               │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                                         │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   from any_llm import completion                                        │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   completion(provider=&quot;platform&quot;, model=&quot;openai:gpt-4&quot;, ...)            │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└──────────────────────────────┬──────────────────────────────────────────┘
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                               │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                               ▼
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>┌─────────────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│                        any-llm SDK (PlatformProvider)                   │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│                                                                         │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  1. Authenticate with platform using ANY_LLM_KEY                        │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│  2. Receive encrypted provider key                                      │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>│  3. Decrypt provider key locally (client-side)                          │
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│  4. Make request directly to provider                                   │
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│  5. Report usage metadata (tokens, latency) to platform                 │
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>└────────────────┬─────────────────────────────────────┬──────────────────┘
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>                 │                                     │
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                 ▼                                     ▼
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>┌─────────────────────────────┐       ┌────────────────────────────────────┐
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│   any-llm Managed Platform  │       │        LLM Provider                │
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│                             │       │   (OpenAI, Anthropic, etc.)        │
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│  • Encrypted key storage    │       │                                    │
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│  • Usage tracking           │       │   Your prompts/responses go        │
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│  • Cost analytics           │       │   directly here—never through      │
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│  • Performance metrics      │       │   our platform                     │
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>└─────────────────────────────┘       └────────────────────────────────────┘
 </span></code></pre></div>
-<h2 id="common-issues">Common Issues</h2>
-<h3 id="authentication-errors">Authentication Errors</h3>
+<h2 id="key-features">Key Features</h2>
+<h3 id="client-side-encryption">Client-Side Encryption</h3>
+<p>Your provider API keys are encrypted in your browser using XChaCha20-Poly1305 before being sent to our servers. The encryption key is derived from your account credentials and never leaves your device. This means:</p>
 <ul>
-<li>Ensure you're using the correct master key format: <code>Bearer your-secure-master-key</code></li>
-<li>Check that the <code>X-AnyLLM-Key</code> header is properly set</li>
-<li>Verify that virtual API keys are active and not expired</li>
+<li>We cannot read your provider API keys</li>
+<li>Even if our database were compromised, your keys remain encrypted</li>
+<li>You maintain full control over your credentials</li>
 </ul>
-<h3 id="configuration-issues">Configuration Issues</h3>
+<h3 id="privacy-first-usage-tracking">Privacy-First Usage Tracking</h3>
+<p>The platform tracks usage metadata to provide cost and performance insights:</p>
+<p><strong>What we track for you:</strong></p>
 <ul>
-<li>Verify your <code>config.yml</code> file is properly formatted</li>
-<li>Check that environment variables are set correctly</li>
-<li>Ensure provider API keys are valid and have proper permissions</li>
+<li>Token counts (input and output)</li>
+<li>Model name and provider</li>
+<li>Request timestamps</li>
+<li>Performance metrics (latency, throughput)</li>
 </ul>
-<h3 id="budget-enforcement">Budget Enforcement</h3>
+<p><strong>What we never track:</strong></p>
 <ul>
-<li>Check that budgets are properly assigned to users</li>
-<li>Verify budget limits are set correctly</li>
-<li>Monitor user spending to ensure limits are being enforced</li>
+<li>Your prompts</li>
+<li>Model responses</li>
+<li>Any content from your conversations</li>
 </ul>
-<h2 id="getting-help">Getting Help</h2>
+<h3 id="project-organization">Project Organization</h3>
+<p>Organize your usage by project, team, or environment:</p>
 <ul>
-<li>Check the logs for detailed error messages</li>
-<li>Verify your configuration matches the examples in the documentation</li>
-<li>Ensure all required environment variables are set</li>
+<li>Create separate projects for development, staging, and production</li>
+<li>Track costs per project</li>
+<li>Set up different provider keys per project</li>
 </ul>
+<h2 id="platform-vs-gateway">Platform vs. Gateway</h2>
+<p>any-llm offers two solutions for managing LLM access. Choose the one that fits your needs:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Managed Platform</th>
+<th>Self-Hosted Gateway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Cloud-hosted (no infrastructure)</td>
+<td>Self-hosted (Docker + Postgres)</td>
+</tr>
+<tr>
+<td><strong>Key Storage</strong></td>
+<td>Client-side encrypted vault</td>
+<td>Your own configuration</td>
+</tr>
+<tr>
+<td><strong>Budget Enforcement</strong></td>
+<td>Coming soon</td>
+<td>Built-in</td>
+</tr>
+<tr>
+<td><strong>User Management</strong></td>
+<td>Per-project</td>
+<td>Full user/key management</td>
+</tr>
+<tr>
+<td><strong>Request Routing</strong></td>
+<td>Direct to provider, no proxy</td>
+<td>Through your gateway</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Teams wanting zero-ops key management and usage tracking</td>
+<td>Organizations needing full control</td>
+</tr>
+</tbody>
+</table>
+<p>You can also use both together—store your provider keys in the managed platform and use them in a self-hosted gateway deployment.</p>
+<h2 id="current-status">Current Status</h2>
+<p>The any-llm managed platform is in <strong>open beta</strong>. During the beta:</p>
+<ul>
+<li><strong>Free access</strong> to all features</li>
+<li>Core encryption and key management are <strong>production-ready</strong></li>
+<li>Dashboard UX and advanced features are being refined</li>
+<li>Feedback is welcome at <a href="https://any-llm.ai">any-llm.ai</a></li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>Ready to try the managed platform?</p>
+<ol>
+<li>Create an account at <a href="https://any-llm.ai">any-llm.ai</a></li>
+<li>Add your provider API keys</li>
+<li>Get your virtual key</li>
+<li>Make your first request</li>
+</ol>
 
 
 
@@ -1479,7 +1684,7 @@
       <nav class="md-footer__inner md-grid" aria-label="Footer" >
         
           
-          <a href="../api-reference/" class="md-footer__link md-footer__link--prev" aria-label="Previous: API Reference">
+          <a href="../../api/types/batch/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Batch">
             <div class="md-footer__button md-icon">
               
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
@@ -1489,20 +1694,20 @@
                 Previous
               </span>
               <div class="md-ellipsis">
-                API Reference
+                Batch
               </div>
             </div>
           </a>
         
         
           
-          <a href="../docker-deployment/" class="md-footer__link md-footer__link--next" aria-label="Next: Docker Deployment">
+          <a href="../../gateway/overview/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Docker Deployment
+                Overview
               </div>
             </div>
             <div class="md-footer__button md-icon">
