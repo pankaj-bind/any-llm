@@ -350,7 +350,7 @@ Provider source code is in [`src/any_llm/providers/`](https://github.com/mozilla
 | [`deepseek`](https://platform.deepseek.com/) | DEEPSEEK_API_KEY | DEEPSEEK_API_BASE | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
 | [`fireworks`](https://fireworks.ai/api) | FIREWORKS_API_KEY | FIREWORKS_API_BASE | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ |
 | [`gateway`](https://github.com/mozilla-ai/any-llm) | GATEWAY_API_KEY | GATEWAY_API_BASE | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| [`gemini`](https://ai.google.dev/gemini-api/docs) | GEMINI_API_KEY/GOOGLE_API_KEY | GOOGLE_GEMINI_BASE_URL | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |
+| [`gemini`](https://ai.google.dev/gemini-api/docs) | GEMINI_API_KEY/GOOGLE_API_KEY | GOOGLE_GEMINI_BASE_URL | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | [`groq`](https://groq.com/api) | GROQ_API_KEY | GROQ_BASE_URL | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
 | [`huggingface`](https://huggingface.co/docs/huggingface_hub/package_reference/inference_client) | HF_TOKEN | HUGGINGFACE_API_BASE | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
 | [`inception`](https://inceptionlabs.ai/) | INCEPTION_API_KEY | INCEPTION_API_BASE | ❌ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
@@ -371,7 +371,7 @@ Provider source code is in [`src/any_llm/providers/`](https://github.com/mozilla
 | [`sagemaker`](https://aws.amazon.com/sagemaker/) | AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY | SAGEMAKER_ENDPOINT_URL | ❌ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
 | [`sambanova`](https://sambanova.ai/) | SAMBANOVA_API_KEY | SAMBANOVA_API_BASE | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | [`together`](https://together.ai/) | TOGETHER_API_KEY | TOGETHER_API_BASE | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
-| [`vertexai`](https://cloud.google.com/vertex-ai/docs) |  | VERTEXAI_API_BASE | ❌ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ |
+| [`vertexai`](https://cloud.google.com/vertex-ai/docs) |  | VERTEXAI_API_BASE | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | [`vertexaianthropic`](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude) |  | VERTEXAI_ANTHROPIC_API_BASE | ❌ | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ |
 | [`vllm`](https://docs.vllm.ai/) | VLLM_API_KEY | VLLM_API_BASE | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
 | [`voyage`](https://docs.voyageai.com/) | VOYAGE_API_KEY | VOYAGE_API_BASE | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
@@ -379,6 +379,8 @@ Provider source code is in [`src/any_llm/providers/`](https://github.com/mozilla
 | [`xai`](https://x.ai/) | XAI_API_KEY | XAI_API_BASE | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
 | [`zai`](https://docs.z.ai/guides/develop/python/introduction) | ZAI_API_KEY | ZAI_BASE_URL | ❌ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ❌ |
 <!-- PROVIDER-TABLE-END -->
+
+Gemini and Vertex AI completions also support PDF inputs in OpenAI-compatible `file` content blocks, including base64 data URIs and URI-based file references.
 
 
 ---
@@ -589,7 +591,7 @@ def responses(
     api_base: str | None = None,
     instructions: str | None = None,
     max_tool_calls: int | None = None,
-    parallel_tool_calls: int | None = None,
+    parallel_tool_calls: bool | None = None,
     reasoning: Any | None = None,
     text: Any | None = None,
     presence_penalty: float | None = None,
@@ -631,7 +633,7 @@ async def aresponses(
     api_base: str | None = None,
     instructions: str | None = None,
     max_tool_calls: int | None = None,
-    parallel_tool_calls: int | None = None,
+    parallel_tool_calls: bool | None = None,
     reasoning: Any | None = None,
     text: Any | None = None,
     presence_penalty: float | None = None,
@@ -670,7 +672,7 @@ async def aresponses(
 | `api_base` | `str \| None` | None | Base URL for the provider API |
 | `instructions` | `str \| None` | None | A system (or developer) message inserted into the model's context. |
 | `max_tool_calls` | `int \| None` | None | The maximum number of total calls to built-in tools that can be processed in a response. This maximum number applies across all built-in tool calls, not per individual tool. Any further attempts to call a tool by the model will be ignored. |
-| `parallel_tool_calls` | `int \| None` | None | Whether to allow the model to run tool calls in parallel. |
+| `parallel_tool_calls` | `bool \| None` | None | Whether to allow the model to run tool calls in parallel. |
 | `reasoning` | `Any \| None` | None | Configuration options for reasoning models. |
 | `text` | `Any \| None` | None | Configuration options for a text response from the model. Can be plain text or structured JSON data. |
 | `presence_penalty` | `float \| None` | None | Penalizes new tokens based on whether they appear in the text so far. |
